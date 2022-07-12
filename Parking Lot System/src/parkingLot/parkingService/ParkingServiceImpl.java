@@ -163,22 +163,33 @@ public class ParkingServiceImpl implements ParkingService {
 	// display <display_type> <vehicle_type>
 	@Override
 	public String display(DisplayType dispType, VehicleType vehicleType) {
-		// TODO : parse and generate response for each case
+		String msg = "";
 		switch (dispType) {
 		case FREE_COUNT:
-			parkingLot.displayFreeCount(vehicleType);
+			List<Integer> freeCount = parkingLot.displayFreeCount(vehicleType);
+			for (int i = 1; i <= freeCount.size(); i++) {
+				msg += "\nNo. of free slots for " + vehicleType + " on Floor " + i + ": " + freeCount.get(i - 1);
+			}
 			break;
 		case FREE_SLOTS:
-			parkingLot.displayFreeSlots(vehicleType);
+			List<List<Integer>> freeSlots = parkingLot.displayFreeSlots(vehicleType);
+			for (int i = 1; i <= freeSlots.size(); i++) {
+				msg += "\nFree slots for " + vehicleType + " on Floor " + i + ": " + freeSlots.get(i - 1).toString();
+			}
+
 			break;
 		case OCCUPIED_SLOTS:
 			parkingLot.displayOccupiedSlots(vehicleType);
+			List<List<Integer>> occSlots = parkingLot.displayOccupiedSlots(vehicleType);
+			for (int i = 1; i <= occSlots.size(); i++) {
+				msg += "\nOccupied slots for " + vehicleType + " on Floor " + i + ": " + occSlots.get(i - 1).toString();
+			}
 			break;
 		default:
 			break;
 
 		}
-		this.setResponse("Display Coming Soon...");
+		this.setResponse(msg);
 		return response;
 	}
 
